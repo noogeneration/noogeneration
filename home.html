@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>noogen</title>
+<style>
+
+  @font-face {
+      font-family: 'Monoround';
+      src: url('../fonts/monoround/Monoround.otf') format('opentype'); 
+      font-weight: normal;
+      font-style: normal;
+  }
+
+  @font-face {
+      font-family: 'FZeroGX';
+      src: url('../fonts/f_zero_gx_menu/Venue Font/FZGXVenueFont-Oblique.otf') format('opentype'); 
+      font-weight: normal;
+      font-style: normal;
+  }
+  
+  .stage {
+    position: relative;
+    width: 100%;
+    min-height: 80vh;
+    height: 100vh;
+    overflow: hidden;   /* optional: clips anything that bleeds past the stage */
+  }
+  
+  .stage > .rounded-bar {
+    position: relative;
+    z-index: 1;
+  } 
+
+  .bg-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    aspect-ratio: unset;
+
+    border: none;
+    border-radius: 0;
+    z-index: 0;
+  }
+  
+  .bg-view canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    margin: 0; display: flex; flex-direction: column; align-items: center;
+    background: #fff; color: #000; font-family: sans-serif;
+  }
+  h1 { margin-top: 1.8rem; font-size: 1.4rem; }
+  #status {
+    margin: 0.3rem; font-size: 0.95rem; min-height: 1.4rem;
+    font-family: monospace; color: #9cf;
+  }
+  #controls {
+    margin: 0.6rem; display: flex; gap: 1rem; flex-wrap: wrap;
+    align-items: center; font-size: 0.9rem;
+  }
+  label.btn {
+    padding: 0.4rem 0.9rem; background: #266; border-radius: 6px;
+    cursor: pointer; user-select: none;
+  }
+  label.btn:hover { background: #399; }
+  input[type="range"] { vertical-align: middle; }
+  select, input[type="checkbox"] { accent-color: #6cc; }
+  select {
+    background: #112; color: #eee; border: 1px solid #444;
+    padding: 0.3rem; border-radius: 4px;
+  }
+  .rounded-bar {
+    position: relative;
+    z-index: 1;
+    font-family: 'Monoround', Univers LT std, 'ProtoSans35';
+    font-style: italic;
+    color: #8a9692;
+    display: flex;
+    height: 80vh;
+                    /* stretches to the right edge of its container */
+    background: #fede00;
+    border:  10px solid #8a9692;
+    border-right: 100px;
+    margin-left: 10vw;
+    margin-top: 5vh;
+    margin-bottom: auto;
+    
+    border-radius: 9999px 0 0 9999px;  /* fully round left, flat right */
+    box-sizing: border-box;      /* keeps the border inside the 80vh/100% box */
+    
+    flex-direction: row;   /* already default, but explicit is clearer */
+    align-items: top;
+    overflow: hidden;
+  }
+  .views-grid {
+    position: relative;   /* establish a positioned layer */
+    z-index: 3;           /* above .bg-view */
+    display: flex;
+    /*grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));*/
+    border-radius: 9999px;
+    border:   0px solid;
+    /*margin-bottom: 1.5rem;*/
+  }
+  
+  .rounded-bar h1 {
+    font-size: 10vh;
+    letter-spacing: 1rem;
+  }
+  
+  .rounded-bar h2 {
+    font-size: 3vh;
+  }
+
+  .page {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;          /* crucial: lets flex item shrink with long words/letter-spacing */
+    padding: 0 5vw 0 2vw;  /* breathe on the right, small gap from canvas on the left */
+    word-break: break-word;
+  }
+
+  audio {
+
+  }
+
+  .views-grid .view-port{
+  }
+  .view-port {
+    z-index: 2;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+  }
+  #big-view {
+    height: 100%;
+    border-radius: 9999px;
+    flex: 0 0 auto;
+    aspect-ratio: 1 / 1;
+  }
+  .rounded-bar .view-port {
+
+  }
+
+  .view-port canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+  }
+  .view-controls {
+    position: absolute;
+    top: 12px; left: 12px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .view-controls select {
+    pointer-events: auto;
+    background: rgba(10,10,24,0.75);
+    color: #eee;
+    border: 1px solid #666;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 0.85rem;
+  }
+  #info {
+    margin: 0.4rem; font-size: 0.8rem; color: #888;
+    max-width: 620px; text-align: center; line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+  <!--<h1>WebGPU Multi-Model/View Viewer</h1>
+  <div id="status">Initializing…</div>-->
+  
+    
+    <div class="rounded-bar">
+      <div id="big-view" class="view-port" 
+          data-model="./models/sphere_low.obj"
+          data-bg="#fede00"
+          data-wire="#8a9692"
+          data-fov="30"
+          data-distance="4.5"
+          data-thickness="2">
+          <!--<<div class="view-controls">
+            select class="model-select">
+              <option value="cube">Cube</option>
+              <option value="tetra">Tetra</option>
+            </select>
+          </div>-->
+        <canvas></canvas>
+      </div>
+      <div class="page">
+        <h1>noogen </h1> 
+        <audio controls>
+          <source src="./audio/deep_house_take5.ogg" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        <h2>
+          welcome to the future of web design <br>
+        </h2>
+        
+        <h2>
+          this webpage is rendering in real-time with pure webgpu, click and drag to rotate, scroll to zoom.
+        </h2>
+        <div class="views-grid">
+          <div class="view-port" 
+            data-model="cube"
+            data-bg="#fede00"
+            data-wire="#8a9692"
+            data-fov="10"
+            data-distance="20.0"
+            data-thickness="2">
+            <!--<<div class="view-controls">
+              select class="model-select">
+                <option value="cube">Cube</option>
+                <option value="tetra">Tetra</option>
+              </select>
+            </div>-->
+            <canvas></canvas>
+          </div>
+          <div class="view-port" 
+            data-model="tetra"
+            data-bg="#fede00"
+            data-wire="#8a9692"
+            data-fov="10"
+            data-distance="20.0"
+            data-thickness="2">
+            <!--<<div class="view-controls">
+              select class="model-select">
+                <option value="cube">Cube</option>
+                <option value="tetra">Tetra</option>
+              </select>
+            </div>-->
+            <canvas></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <!--<p id="info">
+    Set <code>data-model</code> on any <code>.view-port</code> to choose its start-up shape
+    (<code>cube</code>, <code>tetra</code>, or a path to a .obj file).
+    Drag-and-drop a .obj onto a canvas to load it for that view only.
+  </p>-->
+
+  <script src="main.js"></script>
+</body>
+</html>
