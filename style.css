@@ -6,19 +6,22 @@
 }
 
 :root {
-  --yellow: #fede00;
+  /*--yellow: #fede00;*/
+  --yellow: #d3d3d3;
 
-  --background: #9c9c9c;
-  --dot: #b1b5b3;
+  --background: gray;
+  /*--background: #838282;*/
+  --dot: #0a0e0c;
 
   /*
     Slightly brighter frame shades.
   */
-  --frame-dark: #747d7a;
-  --frame-light: #72cbc7;
-  --frame-inner: #8f9a96;
-
-  --text: #59625f;
+  --frame-outer: #c3c3c3;
+  --frame-middle: #a2a2a2;
+  --frame-inner: gray;
+  /* --frame-inner: #aaa9a9; */
+  /*--text: #59625f;*/
+  --text: #000000;
 }
 
 * {
@@ -51,10 +54,6 @@ body {
   background-repeat: repeat;
 }
 
-
-
-
-
 /*
   Thin outer, darker raised-frame edge.
   The old drop shadow has been removed.
@@ -62,16 +61,18 @@ body {
 .bar-frame-outer {
   width: min(88vw, 1450px);
 
-  padding: 3px;
-  background: var(--frame-dark);
+  padding: 0px;
+  background: var(--frame-outer);
+  border: 10px outset var(--frame-outer);
 }
 
 /*
   Thin brighter top surface of the frame.
 */
 .bar-frame-middle {
-  padding: 4px;
-  background: var(--frame-light);
+  padding: 0px;
+  background: var(--frame-middle);
+  border: 10px solid var(--frame-middle);
 }
 
 /*
@@ -87,7 +88,7 @@ body {
   gap: clamp(1.25rem, 2.5vw, 3rem);
 
   background: var(--yellow);
-  border: 3px solid var(--frame-inner);
+  border: 10px inset var(--frame-inner);
 }
 
 .intro {
@@ -163,11 +164,11 @@ audio {
 
   .bar-frame-outer {
     width: 100%;
-    padding: 4px;
+    padding:0px;
   }
 
   .bar-frame-middle {
-    padding: 3px;
+    padding: 0px;
   }
 
   .layout-bar {
@@ -179,7 +180,7 @@ audio {
     align-items: stretch;
     gap: 2rem;
 
-    border-width: 3px;
+    border-width: 0px;
   }
 
   .intro h1 {
@@ -201,3 +202,86 @@ audio {
   }
 }
 
+.color-controls {
+  width: min(100%, 280px);
+  margin-top: 1.5rem;
+}
+
+.color-controls h2 {
+  margin: 0 0 0.75rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+.color-slider {
+  display: grid;
+  grid-template-columns: 6.8rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+
+  color: var(--text);
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.color-slider input[type="range"] {
+  width: 100%;
+  min-width: 0;
+  height: 14px;
+  margin: 0;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  cursor: pointer;
+  background: transparent;
+}
+
+/* Dark-to-light slider track */
+.color-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border: 1px solid #4b5551;
+  border-radius: 0;
+  background: linear-gradient(to right, #000 0%, #fff 100%);
+}
+
+.color-slider input[type="range"]::-moz-range-track {
+  height: 6px;
+  border: 1px solid #4b5551;
+  border-radius: 0;
+  background: linear-gradient(to right, #000 0%, #fff 100%);
+}
+
+/* Slider handle: Chrome, Safari, Edge */
+.color-slider input[type="range"]::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: var(--yellow);
+  border: 2px solid var(--text);
+  border-radius: 50%;
+}
+
+/* Slider handle: Firefox */
+.color-slider input[type="range"]::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+
+  background: var(--yellow);
+  border: 2px solid var(--text);
+  border-radius: 50%;
+}
+
+@media (max-width: 760px) {
+  .color-controls {
+    width: min(100%, 330px);
+  }
+}

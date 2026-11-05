@@ -31,17 +31,73 @@
             <source src="./audio/deep_house_take5.ogg" type="audio/ogg">
             Your browser does not support the audio element.
           </audio>
+
+          <section class="color-controls" aria-label="Color controls">
+            <h2>colours</h2>
+
+            <label class="color-slider">
+              <span>background</span>
+              <input
+                id="background-slider"
+                type="range"
+                min="0"
+                max="255"
+                value="128"
+                data-variable="--background"
+                aria-label="Background brightness"
+              >
+            </label>
+
+            <label class="color-slider">
+              <span>outer frame</span>
+              <input
+                id="outer-frame-slider"
+                type="range"
+                min="0"
+                max="255"
+                value="195"
+                data-variable="--frame-outer"
+                aria-label="Outer frame brightness"
+              >
+            </label>
+
+            <label class="color-slider">
+              <span>middle frame</span>
+              <input
+                id="middle-frame-slider"
+                type="range"
+                min="0"
+                max="255"
+                value="162"
+                data-variable="--frame-middle"
+                aria-label="Middle frame brightness"
+              >
+            </label>
+
+            <label class="color-slider">
+              <span>inner frame</span>
+              <input
+                id="inner-frame-slider"
+                type="range"
+                min="0"
+                max="255"
+                value="128"
+                data-variable="--frame-inner"
+                aria-label="Inner frame brightness"
+              >
+            </label>
+          </section>
         </section>
 
         <section class="views" aria-label="Interactive 3D models">
           <div
             class="view-port"
             data-model="./models/sphere_low.obj"
-            data-bg="#fede00"
-            data-wire="#8a9692"
+            data-bg="#d3d3d3"
+            data-wire="#000000"
             data-fov="30"
             data-distance="4.5"
-            data-thickness="5"
+            data-thickness="3"
           >
             <canvas></canvas>
           </div>
@@ -49,11 +105,11 @@
           <div
             class="view-port"
             data-model="cube"
-            data-bg="#fede00"
-            data-wire="#8a9692"
+            data-bg="#d3d3d3"
+            data-wire="#000000"
             data-fov="10"
             data-distance="20.0"
-            data-thickness="5"
+            data-thickness="3"
           >
             <canvas></canvas>
           </div>
@@ -61,11 +117,11 @@
           <div
             class="view-port"
             data-model="tetra"
-            data-bg="#fede00"
-            data-wire="#8a9692"
+            data-bg="#d3d3d3"
+            data-wire="#000000"
             data-fov="10"
             data-distance="20.0"
-            data-thickness="5"
+            data-thickness="3"
           >
             <canvas></canvas>
           </div>
@@ -75,6 +131,6 @@
   </main>
 
   <script src="main.js"></script>
+  <script src="controls.js"></script>
 </body>
 </html>
-
