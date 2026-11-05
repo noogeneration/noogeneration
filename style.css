@@ -1,0 +1,203 @@
+@font-face {
+  font-family: "Monoround";
+  src: url("./fonts/monoround/Monoround.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --yellow: #fede00;
+
+  --background: #9c9c9c;
+  --dot: #b1b5b3;
+
+  /*
+    Slightly brighter frame shades.
+  */
+  --frame-dark: #747d7a;
+  --frame-light: #72cbc7;
+  --frame-inner: #8f9a96;
+
+  --text: #59625f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-width: 0;
+  min-height: 100vh;
+  margin: 0;
+  padding: 2rem;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--text);
+  font-family: "Monoround", Arial, sans-serif;
+  font-style: italic;
+
+  /*
+    Dark background with separate bright stipple marks.
+    Each mark is 1px wide and 2px tall.
+  */
+  background-color: var(--background);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Crect width='1' height='2' fill='%23c2cbc7'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+
+
+
+
+/*
+  Thin outer, darker raised-frame edge.
+  The old drop shadow has been removed.
+*/
+.bar-frame-outer {
+  width: min(88vw, 1450px);
+
+  padding: 3px;
+  background: var(--frame-dark);
+}
+
+/*
+  Thin brighter top surface of the frame.
+*/
+.bar-frame-middle {
+  padding: 4px;
+  background: var(--frame-light);
+}
+
+/*
+  Thin inner edge returning to the yellow content area.
+*/
+.layout-bar {
+  min-height: min(67vh, 620px);
+  padding: clamp(1.25rem, 2vw, 2rem);
+
+  display: grid;
+  grid-template-columns: minmax(190px, 0.72fr) minmax(0, 2.65fr);
+  align-items: center;
+  gap: clamp(1.25rem, 2.5vw, 3rem);
+
+  background: var(--yellow);
+  border: 3px solid var(--frame-inner);
+}
+
+.intro {
+  min-width: 0;
+}
+
+.intro h1 {
+  margin: 0 0 1.4rem;
+
+  color: var(--text);
+  font-size: clamp(3rem, 5.5vw, 7rem);
+  font-weight: normal;
+  line-height: 0.82;
+  letter-spacing: clamp(0.1rem, 0.45vw, 0.65rem);
+  overflow-wrap: anywhere;
+}
+
+.intro p {
+  max-width: 23rem;
+  margin: 0 0 1rem;
+
+  font-size: clamp(0.95rem, 1.15vw, 1.3rem);
+  line-height: 1.25;
+}
+
+audio {
+  width: min(100%, 280px);
+  margin-top: 0.5rem;
+}
+
+/*
+  All three desktop canvases are equal squares.
+  No canvas borders are applied.
+*/
+.views {
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.4rem, 1vw, 1rem);
+}
+
+.view-port {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+
+  aspect-ratio: 1 / 1;
+  border: 0;
+  background: var(--yellow);
+}
+
+.view-port canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/*
+  Mobile:
+  - Text remains above the views.
+  - Views stack vertically.
+  - Frame layers become a little thinner.
+*/
+@media (max-width: 760px) {
+  body {
+    display: block;
+    padding: 1rem;
+  }
+
+  .bar-frame-outer {
+    width: 100%;
+    padding: 4px;
+  }
+
+  .bar-frame-middle {
+    padding: 3px;
+  }
+
+  .layout-bar {
+    min-height: calc(100svh - 2rem);
+    padding: 1.25rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2rem;
+
+    border-width: 3px;
+  }
+
+  .intro h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(3.8rem, 18vw, 6rem);
+  }
+
+  .intro p {
+    max-width: 34rem;
+    font-size: 1rem;
+  }
+
+  .views {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    width: min(100%, 440px);
+    margin-inline: auto;
+  }
+}
+
